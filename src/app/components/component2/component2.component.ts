@@ -12,12 +12,20 @@ export class Component2Component implements OnInit {
   constructor(private service2: Service2Service) { }
 
   ngOnInit() {
-    this.letters = this.service2.getLetters();
-    console.log(this.letters);
+    this.service2.getLetters()
+      .subscribe(letters => 
+        {
+          // This is not hit on load.. only once addNewLetter has been called
+          this.letters = letters
+        });
   }
 
   addNewLetter(): void {
     this.service2.addNewLetter();
-    this.letters = this.service2.getLetters();
+
+    // This isn't right surely... this subscription should only happen once. Adding new 
+    // letters should trigger an automatic update?
+    // this.service2.getLetters()
+    //   .subscribe(letters => this.letters = letters);
   }
 }
